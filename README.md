@@ -1,1 +1,0 @@
-# shindanshi-app
