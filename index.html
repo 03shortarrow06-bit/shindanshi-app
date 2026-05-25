@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#fafaf7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="診断士学習">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="referrer" content="no-referrer">
+<title>中小企業診断士 学習アプリ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="apple-touch-icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" fill="%23fafaf7"/><text x="96" y="128" font-size="120" text-anchor="middle" fill="%231a1a1a" font-family="serif" font-weight="500">診</text></svg>'>
+<style>
+:root{
+  --bg:#fafaf7;
+  --surface:#fafaf7;
+  --ink:#1a1a1a;
+  --ink-secondary:#4a4a48;
+  --ink-tertiary:#6b6b66;
+  --ink-quaternary:#9a9a93;
+  --rule-strong:#1a1a1a;
+  --rule:#d9d6cc;
+  --rule-subtle:#e8e6de;
+  --accent:#7a2828;
+  --accent-bg:#f5e9e7;
+  --success:#2d5b3e;
+  --success-bg:#e6efe6;
+  --highlight:#f4ede1;
+  --font-sans:'Inter','Noto Sans JP',-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic UI",sans-serif;
+  --font-jp:'Noto Sans JP',-apple-system,"Hiragino Sans","Yu Gothic UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#16161a;
+    --surface:#16161a;
+    --ink:#fafaf7;
+    --ink-secondary:#c5c2b8;
+    --ink-tertiary:#9a9a93;
+    --ink-quaternary:#6b6b66;
+    --rule-strong:#fafaf7;
+    --rule:#2d2d2f;
+    --rule-subtle:#252527;
+    --accent:#d96a6a;
+    --accent-bg:#2a1818;
+    --success:#7ab48a;
+    --success-bg:#1a2520;
+    --highlight:#2a261d;
+  }
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+html,body{
+  font-family:var(--font-sans);
+  background:var(--bg);
+  color:var(--ink);
+  font-size:15px;
+  line-height:1.6;
+  font-feature-settings:"palt" 1;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  padding-top:env(safe-area-inset-top);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.container{max-width:560px;margin:0 auto;padding:24px 24px 80px;}
+@media (max-width:480px){.container{padding:16px 20px 80px}}
+
+/* —— Typography utilities —— */
+.label{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-tertiary);font-weight:500}
+.label-strong{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink);font-weight:500}
+.label-accent{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);font-weight:500}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+
+/* —— Masthead —— */
+.masthead{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  padding-bottom:14px;border-bottom:1px solid var(--rule-strong);
+  margin-bottom:24px;
+}
+.masthead-title{display:flex;flex-direction:column;gap:2px}
+.masthead-eyebrow{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-tertiary);font-weight:500}
+.masthead-h1{font-size:18px;font-weight:500;letter-spacing:-0.01em;line-height:1.1}
+.masthead-stat{text-align:right}
+.masthead-stat .num-large{font-size:20px;font-weight:500;letter-spacing:-0.02em}
+.masthead-stat .num-sub{font-size:10px;letter-spacing:0.08em;color:var(--ink-tertiary);text-transform:uppercase;margin-top:2px;font-weight:500}
+
+/* —— Screens —— */
+.screen{display:none}
+.screen.active{display:block}
+
+/* —— Home: Mode list —— */
+.mode-section{margin-bottom:32px}
+.section-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding-bottom:8px;border-bottom:1px solid var(--rule);
+  margin-bottom:14px;
+}
+.section-label .num{color:var(--ink-tertiary);font-size:11px}
+.mode-list{display:flex;flex-direction:column}
+.mode-item{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 0;border-bottom:1px solid var(--rule-subtle);
+  background:none;border-left:none;border-right:none;border-top:none;
+  width:100%;cursor:pointer;font-family:inherit;text-align:left;color:var(--ink);
+  transition:padding-left 0.15s ease;
+}
+.mode-item:last-child{border-bottom:none}
+.mode-item:hover{padding-left:6px;color:var(--accent)}
+.mode-item .mode-name{font-size:15px;font-weight:500;letter-spacing:-0.005em}
+.mode-item .mode-desc{font-size:12px;color:var(--ink-tertiary);margin-top:3px}
+.mode-item-text{flex:1}
+.mode-item .arrow{color:var(--ink-tertiary);font-size:14px}
+
+/* —— Home: Subject list (editorial) —— */
+.subject-list{display:flex;flex-direction:column}
+.subject-item{
+  display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;
+  padding:16px 0;border-bottom:1px solid var(--rule-subtle);
+  cursor:pointer;transition:padding-left 0.15s ease;
+}
+.subject-item:last-child{border-bottom:none}
+.subject-item:hover{padding-left:6px}
+.subject-item:hover .subject-name{color:var(--accent)}
+.subject-num{
+  font-size:11px;color:var(--ink-tertiary);font-weight:500;
+  font-variant-numeric:tabular-nums;width:24px;
+}
+.subject-main{display:flex;flex-direction:column;gap:2px;min-width:0}
+.subject-name{font-size:15px;font-weight:500;letter-spacing:-0.005em;transition:color 0.15s}
+.subject-meta{font-size:11px;color:var(--ink-tertiary);font-variant-numeric:tabular-nums;letter-spacing:0.02em}
+.subject-progress{
+  display:flex;align-items:center;gap:10px;
+}
+.subject-rate{font-size:13px;font-weight:500;font-variant-numeric:tabular-nums;color:var(--ink);min-width:34px;text-align:right}
+.subject-bar{width:48px;height:2px;background:var(--rule);position:relative;overflow:hidden}
+.subject-bar-fill{position:absolute;left:0;top:0;height:100%;background:var(--ink);transition:width 0.3s}
+
+/* —— Quiz screen —— */
+.quiz-meta{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding-bottom:14px;border-bottom:1px solid var(--rule-strong);
+  margin-bottom:0;
+}
+.quiz-meta-left{display:flex;flex-direction:column;gap:2px}
+.quiz-meta-eyebrow{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-tertiary);font-weight:500}
+.quiz-meta-subject{font-size:16px;font-weight:500;letter-spacing:-0.005em}
+.quiz-meta-right{text-align:right;font-variant-numeric:tabular-nums}
+.quiz-meta-right .num-large{font-size:18px;font-weight:500;letter-spacing:-0.02em}
+.quiz-meta-right .num-large .total{color:var(--ink-quaternary);font-weight:400}
+.quiz-meta-right .num-sub{font-size:10px;letter-spacing:0.08em;color:var(--ink-tertiary);text-transform:uppercase;margin-top:2px;font-weight:500}
+
+.quiz-question{padding:28px 0 24px;border-bottom:1px solid var(--rule)}
+.quiz-question-label{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-quaternary);font-weight:500;margin-bottom:14px}
+.quiz-question-text{font-size:16px;line-height:1.7;color:var(--ink);letter-spacing:-0.005em;white-space:pre-wrap;word-wrap:break-word}
+
+.quiz-choices{padding:8px 0 12px;display:flex;flex-direction:column}
+.quiz-choice{
+  display:flex;align-items:baseline;gap:16px;
+  padding:14px 0;border-bottom:1px solid var(--rule-subtle);
+  background:none;border-left:none;border-right:none;border-top:none;
+  width:100%;cursor:pointer;font-family:inherit;text-align:left;color:var(--ink);
+  position:relative;transition:padding-left 0.15s;
+}
+.quiz-choice:last-child{border-bottom:none}
+.quiz-choice:hover:not(:disabled){padding-left:6px}
+.quiz-choice:hover:not(:disabled) .quiz-choice-letter{color:var(--accent)}
+.quiz-choice:disabled{cursor:default}
+.quiz-choice-letter{
+  font-size:11px;font-weight:500;letter-spacing:0.08em;
+  color:var(--ink-tertiary);width:18px;flex-shrink:0;
+  transition:color 0.15s;
+}
+.quiz-choice-text{flex:1;font-size:14px;line-height:1.55;color:var(--ink)}
+.quiz-choice-mark{
+  font-size:10px;letter-spacing:0.14em;text-transform:uppercase;
+  font-weight:500;flex-shrink:0;
+}
+.quiz-choice.correct .quiz-choice-letter{color:var(--success)}
+.quiz-choice.correct .quiz-choice-text{font-weight:500}
+.quiz-choice.correct .quiz-choice-mark{color:var(--success)}
+.quiz-choice.wrong .quiz-choice-letter{color:var(--accent);text-decoration:line-through}
+.quiz-choice.wrong .quiz-choice-mark{color:var(--accent)}
+
+/* —— Explanation (editorial style: label + body in 2 columns) —— */
+.explanation{display:none;padding-top:20px;border-top:1px solid var(--rule-strong)}
+.explanation.show{display:block}
+.expl-row{display:grid;grid-template-columns:64px 1fr;gap:16px;padding:14px 0;border-bottom:1px solid var(--rule-subtle)}
+.expl-row:last-of-type{border-bottom:none}
+.expl-row .label{padding-top:2px}
+.expl-row .body{font-size:13px;line-height:1.7;color:var(--ink-secondary);white-space:pre-wrap}
+.expl-row .body strong{color:var(--ink);font-weight:500}
+.expl-row .body .num{font-weight:500;color:var(--ink)}
+.expl-verdict{font-size:13px;font-weight:500;letter-spacing:-0.005em}
+.expl-verdict.correct{color:var(--success)}
+.expl-verdict.wrong{color:var(--accent)}
+
+.skill-toggle{
+  background:none;border:none;font-family:inherit;cursor:pointer;
+  font-size:11px;letter-spacing:0.06em;color:var(--ink-tertiary);
+  padding:8px 0;text-align:left;display:flex;align-items:center;gap:6px;
+  transition:color 0.15s;
+}
+.skill-toggle:hover{color:var(--accent)}
+.skill-detail{
+  display:none;padding:14px 16px;background:var(--highlight);
+  margin-top:8px;font-size:12px;line-height:1.65;color:var(--ink-secondary);
+}
+.skill-detail.show{display:block}
+.skill-detail-title{font-size:12px;font-weight:500;color:var(--ink);margin-bottom:8px;letter-spacing:-0.005em}
+.skill-detail dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 12px}
+.skill-detail dt{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-tertiary);padding-top:2px;font-weight:500;white-space:nowrap}
+.skill-detail dd{margin:0;font-size:12px;line-height:1.65}
+.skill-detail ol{margin:0;padding-left:18px;font-size:12px}
+.skill-detail ol li{margin-bottom:2px}
+
+/* —— Actions bar —— */
+.actions{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:24px;padding-top:16px;border-top:1px solid var(--rule);gap:12px;
+}
+.btn-text{
+  background:none;border:none;font-family:inherit;cursor:pointer;
+  font-size:12px;color:var(--ink-tertiary);padding:6px 0;
+  letter-spacing:0.02em;transition:color 0.15s;
+}
+.btn-text:hover{color:var(--ink)}
+.btn-text.danger:hover{color:var(--accent)}
+.btn-primary{
+  background:var(--ink);color:var(--bg);border:none;
+  padding:11px 20px;font-family:inherit;font-size:12px;
+  font-weight:500;letter-spacing:0.06em;cursor:pointer;
+  transition:opacity 0.15s;
+}
+.btn-primary:hover{opacity:0.85}
+.btn-secondary{
+  background:none;border:1px solid var(--ink);color:var(--ink);
+  padding:11px 20px;font-family:inherit;font-size:12px;
+  font-weight:500;letter-spacing:0.06em;cursor:pointer;
+  transition:all 0.15s;
+}
+.btn-secondary:hover{background:var(--ink);color:var(--bg)}
+.btn-row{display:flex;gap:8px;align-items:center}
+
+/* —— Stats screen —— */
+.stats-section{margin-bottom:32px}
+.stats-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:0;
+  border-top:1px solid var(--rule);
+}
+.stats-cell{
+  padding:18px 0;border-bottom:1px solid var(--rule-subtle);
+}
+.stats-cell:nth-child(odd){padding-right:16px;border-right:1px solid var(--rule-subtle)}
+.stats-cell:nth-child(even){padding-left:16px}
+.stats-cell:last-child,.stats-cell:nth-last-child(2){border-bottom:none}
+.stats-cell .label{margin-bottom:6px;display:block}
+.stats-cell .value{font-size:28px;font-weight:500;letter-spacing:-0.03em;font-variant-numeric:tabular-nums;line-height:1}
+.stats-cell .value.success{color:var(--success)}
+.stats-cell .value.accent{color:var(--accent)}
+.stats-cell .value .total{font-size:14px;color:var(--ink-quaternary);font-weight:400;margin-left:4px;letter-spacing:0}
+
+.subject-stat-row{
+  display:grid;grid-template-columns:auto 1fr auto auto;gap:14px;align-items:center;
+  padding:14px 0;border-bottom:1px solid var(--rule-subtle);
+}
+.subject-stat-row:last-child{border-bottom:none}
+.subject-stat-row .name{font-size:14px;font-weight:500;letter-spacing:-0.005em}
+.subject-stat-row .stats-num{font-size:11px;color:var(--ink-tertiary);font-variant-numeric:tabular-nums;letter-spacing:0.02em}
+.subject-stat-row .stats-rate{font-size:13px;font-weight:500;font-variant-numeric:tabular-nums;min-width:34px;text-align:right}
+.subject-stat-row .stats-bar{width:48px;height:2px;background:var(--rule)}
+.subject-stat-row .stats-bar-fill{height:100%;background:var(--ink);transition:width 0.3s}
+
+/* —— Add form (editorial) —— */
+.intro-text{
+  font-size:13px;line-height:1.7;color:var(--ink-secondary);
+  padding:0 0 20px;border-bottom:1px solid var(--rule);margin-bottom:24px;
+}
+.form-row{
+  display:grid;grid-template-columns:80px 1fr;gap:16px;
+  padding:14px 0;border-bottom:1px solid var(--rule-subtle);align-items:start;
+}
+.form-row label{padding-top:8px}
+.form-row input,.form-row textarea,.form-row select{
+  width:100%;background:none;border:none;border-bottom:1px solid var(--rule);
+  padding:8px 0;font-family:inherit;font-size:14px;color:var(--ink);
+  resize:vertical;
+}
+.form-row input:focus,.form-row textarea:focus,.form-row select:focus{
+  outline:none;border-bottom-color:var(--ink);
+}
+.form-row textarea{min-height:60px;line-height:1.65}
+.form-row select{
+  -webkit-appearance:none;appearance:none;cursor:pointer;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%236b6b66' fill='none' stroke-width='1'/></svg>");
+  background-repeat:no-repeat;background-position:right 4px center;padding-right:18px;
+}
+.form-submit{margin-top:16px;display:flex;justify-content:flex-end}
+.custom-list-item{
+  display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;
+  padding:12px 0;border-bottom:1px solid var(--rule-subtle);
+}
+.custom-list-item:last-child{border-bottom:none}
+.custom-list-item .subject-tag{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-tertiary);font-weight:500;white-space:nowrap}
+.custom-list-item .preview{font-size:13px;color:var(--ink);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* —— Settings (editorial) —— */
+.setting-block{
+  display:grid;grid-template-columns:1fr auto;gap:14px;align-items:start;
+  padding:18px 0;border-bottom:1px solid var(--rule-subtle);
+}
+.setting-block:last-of-type{border-bottom:none}
+.setting-block .label-text{font-size:14px;font-weight:500;letter-spacing:-0.005em;margin-bottom:4px}
+.setting-block .desc{font-size:12px;color:var(--ink-tertiary);line-height:1.65}
+.setting-block.clickable{cursor:pointer;transition:padding-left 0.15s}
+.setting-block.clickable:hover{padding-left:6px}
+.setting-block.clickable:hover .label-text{color:var(--accent)}
+.setting-arrow{color:var(--ink-tertiary);font-size:14px;padding-top:2px}
+.howto-list{margin:0;padding:0;list-style:none;counter-reset:howto}
+.howto-list li{
+  counter-increment:howto;padding:10px 0;display:grid;
+  grid-template-columns:24px 1fr;gap:12px;font-size:13px;line-height:1.7;color:var(--ink-secondary);
+}
+.howto-list li::before{
+  content:counter(howto,decimal-leading-zero);
+  font-size:10px;letter-spacing:0.08em;color:var(--ink-tertiary);
+  font-weight:500;font-variant-numeric:tabular-nums;padding-top:4px;
+}
+
+/* —— Bottom navigation —— */
+.bottom-nav{
+  position:sticky;bottom:0;
+  background:var(--bg);border-top:1px solid var(--rule-strong);
+  padding:10px 0 calc(10px + env(safe-area-inset-bottom));
+  margin:32px -24px 0;
+  display:flex;justify-content:space-around;
+}
+@media (max-width:480px){.bottom-nav{margin:32px -20px 0}}
+.nav-btn{
+  background:none;border:none;cursor:pointer;font-family:inherit;
+  font-size:10px;letter-spacing:0.08em;text-transform:uppercase;font-weight:500;
+  color:var(--ink-tertiary);padding:8px 12px;
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  transition:color 0.15s;
+}
+.nav-btn:hover{color:var(--ink)}
+.nav-btn.active{color:var(--ink);position:relative}
+.nav-btn.active::before{
+  content:'';position:absolute;top:-11px;left:50%;transform:translateX(-50%);
+  width:24px;height:1px;background:var(--ink);
+}
+.nav-btn .dot{font-size:6px;line-height:1;margin-bottom:2px;opacity:0.4}
+.nav-btn.active .dot{opacity:1}
+
+/* —— Empty states —— */
+.empty-state{
+  text-align:center;padding:60px 20px;color:var(--ink-tertiary);
+  font-size:13px;
+}
+.empty-state .label{margin-bottom:8px}
+
+/* —— Toast —— */
+.toast{
+  position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
+  background:var(--ink);color:var(--bg);padding:10px 18px;
+  font-size:12px;letter-spacing:0.02em;z-index:1000;
+  opacity:0;pointer-events:none;transition:opacity 0.2s;
+}
+.toast.show{opacity:0.96}
+
+/* —— Subtle italic for serif-feel labels —— */
+.italic{font-style:italic}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header class="masthead">
+<div class="masthead-title">
+<span class="masthead-eyebrow">中小企業診断士</span>
+<h1 class="masthead-h1">学習ノート</h1>
+</div>
+<div class="masthead-stat" id="globalStats">
+<div class="num-large num">0<span style="color:var(--ink-quaternary);font-weight:400"> / 0</span></div>
+<div class="num-sub">回答 — 0%</div>
+</div>
+</header>
+
+<!-- ============== HOME SCREEN ============== -->
+<div class="screen active" id="homeScreen">
+
+<div class="mode-section">
+<div class="section-label">
+<span class="label-strong">出題モード</span>
+<span class="label num">003</span>
+</div>
+<div class="mode-list">
+<button class="mode-item" onclick="startMode('random')">
+<div class="mode-item-text">
+<div class="mode-name">ランダム出題</div>
+<div class="mode-desc">全355問から無作為に</div>
+</div>
+<span class="arrow">→</span>
+</button>
+<button class="mode-item" onclick="startMode('weak')">
+<div class="mode-item-text">
+<div class="mode-name">苦手復習</div>
+<div class="mode-desc">一度間違えた問題のみ</div>
+</div>
+<span class="arrow">→</span>
+</button>
+<button class="mode-item" onclick="startMode('unanswered')">
+<div class="mode-item-text">
+<div class="mode-name">未回答のみ</div>
+<div class="mode-desc">まだ解いていない問題</div>
+</div>
+<span class="arrow">→</span>
+</button>
+</div>
+</div>
+
+<div>
+<div class="section-label">
+<span class="label-strong">科目から選ぶ</span>
+<span class="label num">007</span>
+</div>
+<div class="subject-list" id="subjectGrid"></div>
+</div>
+
+</div>
+
+<!-- ============== QUIZ SCREEN ============== -->
+<div class="screen" id="quizScreen">
+
+<div class="quiz-meta">
+<div class="quiz-meta-left">
+<span class="quiz-meta-eyebrow" id="qSubject">科目</span>
+<span class="quiz-meta-subject" id="qSubjectName"></span>
+</div>
+<div class="quiz-meta-right">
+<div class="num-large num" id="qProgress"></div>
+<div class="num-sub">設問</div>
+</div>
+</div>
+
+<div class="quiz-question">
+<div class="quiz-question-label" id="qNumLabel">問</div>
+<div class="quiz-question-text" id="qText"></div>
+</div>
+
+<div class="quiz-choices" id="qChoices"></div>
+
+<div class="explanation" id="explanation">
+<div class="expl-row">
+<span class="label">判定</span>
+<div class="body"><span class="expl-verdict" id="answerLine"></span></div>
+</div>
+<div class="expl-row">
+<span class="label">解説</span>
+<div class="body" id="explBody"></div>
+</div>
+<div class="expl-row" id="refRow" style="display:none">
+<span class="label">出典</span>
+<div class="body" id="refBody"></div>
+</div>
+<div id="skillRefWrap" style="padding:8px 0 0">
+<div id="skillRef"></div>
+<div id="skillDetail" class="skill-detail"></div>
+</div>
+</div>
+
+<div class="actions">
+<button class="btn-text" onclick="backToHome()">← 一覧へ戻る</button>
+<div class="btn-row">
+<button class="btn-secondary" onclick="askClaude()">Claudeに質問</button>
+<button class="btn-primary" id="nextBtn" onclick="nextQuestion()" style="display:none">次の問題 →</button>
+</div>
+</div>
+
+</div>
+
+<!-- ============== STATS SCREEN ============== -->
+<div class="screen" id="statsScreen">
+
+<div class="section-label">
+<span class="label-strong">学習統計</span>
+<span class="label">通算記録</span>
+</div>
+
+<div class="stats-grid">
+<div class="stats-cell">
+<span class="label">総回答数</span>
+<div class="value num" id="statTotal">0</div>
+</div>
+<div class="stats-cell">
+<span class="label">正答率</span>
+<div class="value num" id="statRate">0%</div>
+</div>
+<div class="stats-cell">
+<span class="label">正答数</span>
+<div class="value num success" id="statCorrect">0</div>
+</div>
+<div class="stats-cell">
+<span class="label">苦手問題</span>
+<div class="value num accent" id="statWeak">0</div>
+</div>
+</div>
+
+<div style="margin-top:32px">
+<div class="section-label">
+<span class="label-strong">科目別の到達度</span>
+<span class="label num">007</span>
+</div>
+<div id="subjectStats"></div>
+</div>
+
+<div class="actions" style="margin-top:32px">
+<button class="btn-text danger" onclick="resetProgress()">学習履歴をリセット</button>
+</div>
+
+</div>
+
+<!-- ============== ADD SCREEN ============== -->
+<div class="screen" id="addScreen">
+
+<div class="section-label">
+<span class="label-strong">問題を追加</span>
+<span class="label">カスタム</span>
+</div>
+
+<p class="intro-text">お手持ちのテキストや過去問から問題を追加できます。このブラウザに保存され、出題ローテーションに加わります。</p>
+
+<div>
+<div class="form-row">
+<label class="label">科目</label>
+<select id="newSubject"></select>
+</div>
+<div class="form-row">
+<label class="label">問題文</label>
+<textarea id="newQuestion" placeholder="問題文を入力"></textarea>
+</div>
+<div class="form-row"><label class="label">選択肢A</label><input id="newChoice0"></div>
+<div class="form-row"><label class="label">選択肢B</label><input id="newChoice1"></div>
+<div class="form-row"><label class="label">選択肢C</label><input id="newChoice2"></div>
+<div class="form-row"><label class="label">選択肢D</label><input id="newChoice3"></div>
+<div class="form-row">
+<label class="label">正解</label>
+<select id="newAnswer"><option value="0">A</option><option value="1">B</option><option value="2">C</option><option value="3">D</option></select>
+</div>
+<div class="form-row">
+<label class="label">解説</label>
+<textarea id="newExplanation"></textarea>
+</div>
+<div class="form-row">
+<label class="label">出典</label>
+<input id="newRef" placeholder="例：テキスト2-5 原価計算">
+</div>
+<div class="form-submit">
+<button class="btn-primary" onclick="addCustomQuestion()">保存する</button>
+</div>
+</div>
+
+<div style="margin-top:40px">
+<div class="section-label">
+<span class="label-strong">追加済みの問題</span>
+</div>
+<div id="customList"></div>
+</div>
+
+</div>
+
+<!-- ============== SETTINGS SCREEN ============== -->
+<div class="screen" id="settingsScreen">
+
+<div class="section-label">
+<span class="label-strong">設定とヘルプ</span>
+</div>
+
+<div class="setting-block">
+<div>
+<div class="label-text">iPhone でアプリ化</div>
+<div class="desc">Safari で開く → 共有ボタン → 「ホーム画面に追加」</div>
+</div>
+</div>
+<div class="setting-block">
+<div>
+<div class="label-text">Claude に質問する機能</div>
+<div class="desc">問題画面の「Claudeに質問」ボタンで、問題文・選択肢・正解・解説を含むプロンプトを生成し Claude.ai が開きます。回答者本人の Claude アカウントが使われます。</div>
+</div>
+</div>
+<div class="setting-block">
+<div>
+<div class="label-text">データの保存場所</div>
+<div class="desc">学習履歴と追加問題はブラウザの localStorage に保存されます。ブラウザのデータをクリアすると失われます。</div>
+</div>
+</div>
+<div class="setting-block clickable" onclick="exportData()">
+<div>
+<div class="label-text">データをエクスポート</div>
+<div class="desc">学習履歴と追加問題を JSON 形式でダウンロード</div>
+</div>
+<span class="setting-arrow">→</span>
+</div>
+<div class="setting-block clickable" onclick="document.getElementById('importFile').click()">
+<div>
+<div class="label-text">データをインポート</div>
+<div class="desc">他端末からエクスポートした JSON を読み込み</div>
+</div>
+<span class="setting-arrow">→</span>
+</div>
+<input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+
+<div style="margin-top:32px">
+<div class="section-label">
+<span class="label-strong">使い方</span>
+</div>
+<ol class="howto-list">
+<li>ホームで「ランダム出題」「苦手復習」「未回答のみ」または科目を選ぶ</li>
+<li>4択から回答 → 即座に正誤と解説が表示</li>
+<li>わからなければ「Claudeに質問」で深掘り</li>
+<li>「追加」タブで自前の問題を増やせる</li>
+</ol>
+</div>
+
+</div>
+
+<!-- ============== BOTTOM NAV ============== -->
+<div class="bottom-nav">
+<button class="nav-btn active" data-screen="homeScreen" onclick="showScreen('homeScreen')">
+<span class="dot">●</span>学習
+</button>
+<button class="nav-btn" data-screen="statsScreen" onclick="showScreen('statsScreen')">
+<span class="dot">●</span>統計
+</button>
+<button class="nav-btn" data-screen="addScreen" onclick="showScreen('addScreen')">
+<span class="dot">●</span>追加
+</button>
+<button class="nav-btn" data-screen="settingsScreen" onclick="showScreen('settingsScreen')">
+<span class="dot">●</span>設定
+</button>
+</div>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<!-- 問題バンクを科目別の外部ファイルから読み込み（同じフォルダに配置） -->
+<script>window.QUESTION_BANK = [];</script>
+<script src="questions_econ.js"></script>
+<script src="questions_finance.js"></script>
+<script src="questions_mgmt.js"></script>
+<script src="questions_ops.js"></script>
+<script src="questions_it.js"></script>
+<script src="questions_law.js"></script>
+<script src="questions_sme.js"></script>
+
+<script>
+const SKILLS={
+'A01':{name:'財務諸表分析（基礎）',category:'財務・会計',definition:'BS・PL・CFの3表を読み解き、企業の経営状況を定量的に把握するスキル。',frameworks:'3表連動、比較分析、趨勢分析、構成比分析',scenes:'決算書レビュー、デューデリ、与信判断、M&A評価',steps:['BS/PL/CFを別々に読む','3表を連動させて読む（利益→現金→資産負債への波及）','同業・自社過年度との比較で違和感を抽出']},
+'A02':{name:'経営指標分析（基礎）',category:'財務・会計',definition:'収益性・安全性・効率性・成長性の4観点から経営状態を評価する分析力。',frameworks:'ROE、ROA、流動比率、自己資本比率',scenes:'経営診断、ベンチマーク比較、目標設定',steps:['4観点それぞれ代表指標を覚える','業種別の標準値を押さえる','ROE分解で構造化']},
+'A03':{name:'損益分岐点分析（CVP分析）',category:'財務・会計',definition:'固定費・変動費を区別し、利益が生まれる売上水準を算定するスキル。',frameworks:'限界利益率、損益分岐点比率、安全余裕率',scenes:'値決め、価格戦略、不採算事業判断',steps:['固変分解を実施','限界利益率を算出','BEP売上を可視化']},
+'A04':{name:'キャッシュフロー管理',category:'財務・会計',definition:'営業・投資・財務の3区分CFを読み、資金繰りリスクを未然に管理する力。',frameworks:'間接法CF計算書、運転資本回転日数、FCF',scenes:'資金繰り表作成、運転資本最適化',steps:['月次資金繰り表を作る','営業CF>投資CFか確認','CCCを短縮']},
+'A05':{name:'原価計算・原価管理',category:'財務・会計',definition:'製品・サービスの原価を正確に把握し、収益管理に活用するスキル。',frameworks:'全部原価、直接原価、標準原価、ABC',scenes:'製品別収益性分析、原価低減',steps:['自社の原価計算方法を整理','製品別・顧客別の収益性を可視化','標準原価との差異分析']},
+'A06':{name:'予算管理・予実管理',category:'財務・会計',definition:'年度予算を策定し、月次の予実差異を分析して打ち手に繋げる運営力。',frameworks:'予算編成、差異分析、ローリングフォーキャスト',scenes:'中計→年度予算、月次会議',steps:['売上は積み上げ、費用はゼロベース','月次で予実差異を要因分解','四半期で着地見込みを再予測']},
+'A07':{name:'投資意思決定',category:'財務・会計',definition:'投資案件の経済性を多面的に評価して意思決定を支えるスキル。',frameworks:'NPV、IRR、回収期間法、DCF、WACC',scenes:'設備投資判断、M&A、新規事業',steps:['投資のCFを年次で描く','WACCを設定','NPV>0 かつ IRR>ハードルレート']},
+'A08':{name:'資金調達・資本政策',category:'財務・会計',definition:'エクイティ・デットを最適に組合せ、成長と財務健全性を両立させる力。',frameworks:'最適資本構成、DEレシオ、IPO準備',scenes:'銀行交渉、増資、株主構成設計',steps:['必要資金額を中計から逆算','調達手段を比較','最適ミックスを決定']},
+'A09':{name:'管理会計・KPI設計',category:'財務・会計',definition:'経営意思決定に資する管理会計を構築し、KPIで現場を動かすスキル。',frameworks:'BSC、KPIツリー',scenes:'事業部別収益管理、KPIダッシュボード',steps:['戦略目標をKPIツリーで可視化','データソースを確定','BIで自動可視化']},
+'A10':{name:'税務・財務ガバナンス基礎',category:'財務・会計',definition:'法人税・消費税の基本構造を理解し、税務面のリスクを管理する力。',frameworks:'法人税、消費税',scenes:'タックスプランニング',steps:['課税体系を理解','繰越欠損金や税額控除を把握','顧問税理士と決算前会議']},
+'B01':{name:'生産管理基礎（QCD）',category:'運営管理',definition:'品質・コスト・納期のバランスを取り、生産性を高めるマネジメント力。',frameworks:'QCD、5S、3M、4M',scenes:'工場診断、製造現場改善',steps:['5Sの現状を写真で記録','QCD KPIを設定','4M変更管理ルールを整備']},
+'B02':{name:'在庫管理',category:'運営管理',definition:'在庫を最適水準に保ち、欠品と過剰を同時に回避するスキル。',frameworks:'ABC分析、安全在庫、発注点方式',scenes:'在庫圧縮、SKU整理',steps:['ABC分析でSKUを階層化','A品は密に管理','安全在庫を再計算']},
+'B03':{name:'品質管理',category:'運営管理',definition:'再発防止と未然防止の仕組みで品質トラブルを低減するスキル。',frameworks:'QC7つ道具、なぜなぜ、FMEA、TQM',scenes:'クレーム対応、品質会議',steps:['5回のなぜを必須化','パレート図で重点対象を特定','FMEAで未然防止']},
+'B04':{name:'工程管理・スケジューリング',category:'運営管理',definition:'限られたリソースを工程に最適配分し、納期を遵守する計画力。',frameworks:'ガントチャート、PERT/CPM',scenes:'プロジェクト管理',steps:['WBSで作業を分解','CPを特定','ボトルネックに集中投資']},
+'B05':{name:'SCM',category:'運営管理',definition:'調達〜生産〜物流〜販売の流れ全体を最適化するスキル。',frameworks:'需要予測、S&OP、VMI、SCOR',scenes:'調達戦略、需給調整',steps:['SCORでマッピング','需要予測精度を測る','S&OPで月次会議']},
+'B06':{name:'店舗・小売運営管理',category:'運営管理',definition:'店舗の生産性と顧客満足を両立させるオペレーション設計力。',frameworks:'売場レイアウト、動線設計、坪効率、VMD',scenes:'店舗診断、棚割り',steps:['ゾーニングし回遊動線を設計','坪効率を見る','ID-POSで棚割りに反映']},
+'B07':{name:'業務プロセス改善（BPR）',category:'運営管理',definition:'As-IsをTo-Beに変革する業務プロセス再設計スキル。',frameworks:'業務フロー、ECRS、VSM',scenes:'RPA導入前棚卸し',steps:['現状業務をフローで可視化','ECRSの順で改善案','IT化のロードマップ']},
+'B08':{name:'IT・DX活用',category:'運営管理／情報',definition:'業務課題に対し最適なIT・デジタル手段を選定し実装に導く力。',frameworks:'RFP、クラウド、SaaS、生成AI',scenes:'基幹刷新、業務自動化',steps:['業務課題を起点に要件整理','標準化／SaaS優先','PoC→本番化']},
+'B09':{name:'IE・生産性改善（カイゼン）',category:'運営管理',definition:'動作・時間を科学的に分析し、地道な改善で生産性を上げる力。',frameworks:'動作研究、時間研究、5S、かんばん',scenes:'現場カイゼン',steps:['動画で動作・時間を記録','付加価値／非付加価値を分類','標準作業を更新']},
+'B10':{name:'物流・ロジスティクス管理',category:'運営管理',definition:'倉庫・配送・保管のコストと品質を最適化するスキル。',frameworks:'WMS、共同配送、モーダルシフト',scenes:'倉庫運用診断、3PL選定',steps:['物流コストを売上比で可視化','庫内/幹線/ラストワンマイル別に分解','WMS導入余地を検討']},
+'C01':{name:'組織設計',category:'組織論',definition:'戦略に応じて最適な組織構造を設計し機能させるスキル。',frameworks:'機能別、事業部制、マトリクス',scenes:'事業再編、組織改編',steps:['戦略と組織の整合を点検','意思決定権限を明文化','評価制度と整合']},
+'C02':{name:'リーダーシップ',category:'組織論',definition:'状況に応じてスタイルを使い分け、メンバーを動かす力。',frameworks:'PM理論、SL理論、サーバント、変革型',scenes:'管理職研修、後継者育成',steps:['自分のスタイルを言語化','部下の成熟度に応じて変える','360度フィードバックで補正']},
+'C03':{name:'モチベーション理論',category:'組織論',definition:'人が動機づけられる構造を理解し、職場で実践するスキル。',frameworks:'マズロー、ハーズバーグ、期待理論',scenes:'退職防止、エンゲージメント',steps:['衛生要因と動機付け要因を区別','自律・有能・関係性を整える','サーベイで定点観測']},
+'C04':{name:'人材育成設計',category:'組織論',definition:'戦略に紐づく教育体系を組み立て、現場で機能させる力。',frameworks:'OJT、Off-JT、70:20:10',scenes:'研修体系設計',steps:['等級ごとの期待人材像','70:20:10で配分','スキルマップでギャップ把握']},
+'C05':{name:'評価・報酬制度設計',category:'組織論',definition:'公平かつ動機づけになる評価・報酬制度を設計運用するスキル。',frameworks:'MBO、OKR、360度評価',scenes:'人事制度改定',steps:['等級と給与テーブルを設計','評価項目を成果と行動の二軸で','キャリブレーション']},
+'C06':{name:'チームビルディング・ファシリ',category:'組織論',definition:'多様な人を束ね、議論を成果に導く対人スキル。',frameworks:'タックマンモデル、GRPI、心理的安全性',scenes:'キックオフ、ワークショップ',steps:['目的・成果物・役割を握る','発散と収束のリズム','心理的安全性を高める']},
+'C07':{name:'組織開発（OD）・風土改革',category:'組織論',definition:'組織の価値観・行動様式に介入し、変革を促すスキル。',frameworks:'7S、組織診断サーベイ',scenes:'風土改革、バリュー策定',steps:['組織診断で現状を可視化','経営層を巻き込みストーリー発信','日々の行動・評価に組み込む']},
+'C08':{name:'変革マネジメント',category:'組織論',definition:'組織変革を計画的に推進し、抵抗を乗り越えるスキル。',frameworks:'コッターの8段階、ADKAR、レヴィン',scenes:'PMI、新システム導入',steps:['危機感醸成と推進連合','短期成果（クイックウィン）','制度・文化に組み込み後戻り防止']},
+'C09':{name:'人事戦略・人材ポートフォリオ',category:'組織論',definition:'経営戦略と連動した人材ポートフォリオを設計するスキル。',frameworks:'サクセッションプラン、9ボックス、HRBP',scenes:'中期人材計画',steps:['中計の人材要件を職種別に定義','9ボックスで現有人材を評価','採用／育成／配置のミックス']},
+'C10':{name:'対人コミュニケーション',category:'組織論',definition:'傾聴・質問・フィードバックでステークホルダーを動かすスキル。',frameworks:'アクティブリスニング、GROW、アサーション',scenes:'ヒアリング、合意形成',steps:['相手の目的・前提・関心を聞き切る','質問を使い分け','事実→解釈→提案の順で発信']},
+'D01':{name:'経営理念・MVV策定',category:'経営戦略',definition:'存在意義と目指す姿を言語化し、組織の北極星を打ち立てる力。',frameworks:'MVV、パーパス、クレド',scenes:'周年プロジェクト、PMI',steps:['創業の原点を再発見','10年後の姿を具体イメージ化','行動指針に落とす']},
+'D02':{name:'外部・内部環境分析',category:'経営戦略',definition:'事業を取り巻く環境を構造的に把握する分析力。',frameworks:'PEST、3C、SWOT、ファイブフォース',scenes:'中計策定、市場分析',steps:['PESTで遠い環境、5Fで近い環境','3Cで顧客／競合／自社の整合','クロスSWOTで優先順位']},
+'D03':{name:'全社戦略・事業ポートフォリオ',category:'経営戦略',definition:'複数事業の最適な組合せを設計し資源配分を行うスキル。',frameworks:'PPM、GE-McKinseyマトリクス',scenes:'選択と集中、撤退基準',steps:['事業の魅力度・自社の競争力で2軸評価','キャッシュの出し手／使い手を整理','投資・撤退方針を握る']},
+'D04':{name:'競争戦略',category:'経営戦略',definition:'競合に対する持続的優位性を構築する戦略立案力。',frameworks:'ポーター3戦略、バリューチェーン、ブルーオーシャン',scenes:'差別化、コストリーダーシップ',steps:['競争軸を明確化','バリューチェーンで強み源泉を特定','真似されにくい仕組みを作る']},
+'D05':{name:'成長戦略',category:'経営戦略',definition:'既存・新規の軸で成長機会を見出し意思決定するスキル。',frameworks:'アンゾフマトリクス、多角化、隣接拡張',scenes:'M&Aターゲット選定',steps:['市場浸透から順に検討','隣接領域へケイパビリティを延長','多角化はシナジーを厳格に']},
+'D06':{name:'マーケティング戦略',category:'経営戦略',definition:'誰に・何を・どう届けるかを設計し顧客創造に繋げる力。',frameworks:'STP、4P・4C、LTV',scenes:'新商品上市、価格戦略',steps:['STPで標的顧客を定義','4Pは4Cと裏返して設計','LTV/CACでROI管理']},
+'D07':{name:'ビジネスモデル設計',category:'経営戦略',definition:'収益構造とバリューチェーンを統合設計するスキル。',frameworks:'BMC、リーンキャンバス',scenes:'新規事業、サブスク化',steps:['BMCで9ブロックを言語化','単位経済で経済性を検証','MVPで検証']},
+'D08':{name:'M&A・アライアンス戦略',category:'経営戦略',definition:'資本提携や業務提携を成長手段として活用するスキル。',frameworks:'M&Aプロセス、バリュエーション、DD、PMI',scenes:'買収候補スクリーニング',steps:['戦略から逆算してターゲット定義','DDで本質的リスクを特定','100日プランでPMI']},
+'D09':{name:'中期経営計画策定',category:'経営戦略',definition:'3〜5年の事業計画を、定量定性両面で組み立てる力。',frameworks:'KGI/KSF/KPI、バックキャスティング',scenes:'中計策定',steps:['3層を整合','戦略テーマ別ロードマップ','月次／四半期でモニタリング']},
+'D10':{name:'イノベーション・新規事業',category:'経営戦略',definition:'既存事業と並行して新たな収益柱を生み出すスキル。',frameworks:'両利き経営、リーンスタートアップ、デザイン思考',scenes:'新規事業企画',steps:['顧客課題の解像度を上げる','MVPで仮説検証','既存とは別ルールで運営']},
+'E01':{name:'会社法基礎',category:'法令',definition:'会社の機関設計と意思決定の枠組みを理解するスキル。',frameworks:'機関設計、株主総会、取締役会、監査役',scenes:'取締役会運営、株主総会対応',steps:['自社の機関設計を把握','取締役会と株主総会の決議事項を区別','議事録運用を整える']},
+'E02':{name:'労働関連法',category:'法令',definition:'労基法・労契法・労安衛法など労務リスクを管理する力。',frameworks:'労働時間規制、36協定、同一労働同一賃金',scenes:'就業規則改定、ハラスメント研修',steps:['就業規則と労使協定の整合点検','労働時間把握と36協定遵守確認','ハラスメント窓口・研修整備']},
+'E03':{name:'契約法務',category:'法令',definition:'契約書のリスクを読み、修正提案ができる実務力。',frameworks:'民法、契約書レビュー、表明保証',scenes:'業務委託、NDA、ライセンス',steps:['契約の目的・対価・期間・終了を押さえる','リスク条項を重点レビュー','社内チェックリスト化']},
+'E04':{name:'知的財産権',category:'法令',definition:'特許・商標・著作権・営業秘密を経営資源として活用するスキル。',frameworks:'特許法、商標法、著作権法、不正競争防止法',scenes:'知財戦略、特許出願、商標管理',steps:['知財ポートフォリオの棚卸し','出願戦略を立案','営業秘密の社内管理体制']},
+'E05':{name:'個人情報保護・情報セキュリティ法',category:'法令',definition:'個情法・改正法令を遵守し、データを安全に取扱う体制を整える力。',frameworks:'個情法、GDPR、仮名加工',scenes:'プライバシー影響評価、漏えい対応',steps:['データマップで保有個人情報を可視化','利用目的・第三者提供のルール整備','インシデント対応プロセスを訓練']},
+'E06':{name:'独占禁止法・下請法',category:'法令',definition:'取引慣行に潜む独禁・下請違反リスクを管理するスキル。',frameworks:'下請法の4義務11禁止',scenes:'取引基本契約、価格交渉',steps:['自社の取引上の立場を整理','下請法11禁止に該当する慣行をチェック','価格転嫁の合意形成']},
+'E07':{name:'税法基礎',category:'法令',definition:'法人税・消費税・所得税の概略を理解し税務観点で意思決定する力。',frameworks:'法人税、消費税（インボイス）、所得税',scenes:'税理士との議論、節税スキーム',steps:['損益と所得の違いを理解','税額控除・特別償却を把握','インボイス制度を運用に反映']},
+'E08':{name:'コーポレートガバナンス・内部統制',category:'法令',definition:'ガバナンス体制と内部統制を整え、信頼される経営を実現する力。',frameworks:'CGコード、J-SOX、三線ディフェンス',scenes:'ガバナンス報告書、内部統制報告書',steps:['取締役会の構成と運営実態を点検','内部統制を文書化','第三者評価で持続的改善']},
+'E09':{name:'コンプライアンス体制構築',category:'法令',definition:'違反を未然に防ぎ、起きた時に適切対応できる仕組みを作る力。',frameworks:'公益通報者保護法、内部通報窓口',scenes:'通報窓口設置、コンプラ委員会',steps:['内部通報窓口を社内外に設置','役職員研修を年1回以上','重大事案発生時の初動・公表手順']},
+'E10':{name:'業法・許認可',category:'法令',definition:'業種ごとの規制を把握し、必要な許認可を維持・取得する力。',frameworks:'建設業法、宅建業法、古物営業法、食品衛生法',scenes:'新規事業の許認可調査',steps:['自社事業に関連する業法を棚卸し','許可・届出の更新スケジュールを管理','事前に行政窓口へ照会']}
+};
+
+const QUESTIONS=(typeof window.QUESTION_BANK!=='undefined')?window.QUESTION_BANK:[];
+
+const SUBJECTS=[
+{id:'econ',name:'経済学・経済政策'},
+{id:'finance',name:'財務・会計'},
+{id:'mgmt',name:'企業経営理論'},
+{id:'ops',name:'運営管理'},
+{id:'law',name:'経営法務'},
+{id:'it',name:'経営情報システム'},
+{id:'sme',name:'中小企業経営・政策'}
+];
+
+const SK='shindanshi_progress_v1',CK='shindanshi_custom_v1';
+let state={history:{}};
+function loadState(){try{const s=localStorage.getItem(SK);if(s)state=JSON.parse(s);if(!state.history)state.history={};}catch(e){state={history:{}};}}
+function saveState(){localStorage.setItem(SK,JSON.stringify(state));}
+function loadCustom(){try{const s=localStorage.getItem(CK);return s?JSON.parse(s):[];}catch(e){return[];}}
+function saveCustom(a){localStorage.setItem(CK,JSON.stringify(a));}
+function allQs(){return[...QUESTIONS,...loadCustom()];}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function pad(n){return String(n).padStart(2,'0');}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.screen===id));
+  if(id==='homeScreen')renderHome();
+  if(id==='statsScreen')renderStats();
+  if(id==='addScreen')renderAdd();
+  window.scrollTo({top:0,behavior:'instant'});
+}
+
+function renderHome(){
+  const grid=document.getElementById('subjectGrid');
+  grid.innerHTML='';
+  const qs=allQs();
+  SUBJECTS.forEach((sub,i)=>{
+    const sq=qs.filter(q=>q.subject===sub.id);
+    const ans=sq.filter(q=>state.history[q.id]).length;
+    const cor=sq.filter(q=>state.history[q.id]&&state.history[q.id].correct).length;
+    const tot=sq.length;
+    const prog=tot>0?(ans/tot*100):0;
+    const rate=ans>0?Math.round(cor/ans*100):0;
+    const btn=document.createElement('button');
+    btn.className='subject-item';
+    btn.style.cssText='background:none;border:none;border-left:none;border-right:none;border-top:none;font-family:inherit;text-align:left;color:var(--ink);width:100%;border-bottom:1px solid var(--rule-subtle);cursor:pointer';
+    btn.onclick=()=>startSubject(sub.id);
+    btn.innerHTML=`
+      <span class="subject-num">${pad(i+1)}</span>
+      <span class="subject-main">
+        <span class="subject-name">${esc(sub.name)}</span>
+        <span class="subject-meta">${tot}問 · 回答 ${ans} · 正答 ${cor}</span>
+      </span>
+      <span class="subject-progress">
+        <span class="subject-rate">${rate}%</span>
+        <span class="subject-bar"><span class="subject-bar-fill" style="width:${prog}%"></span></span>
+      </span>
+    `;
+    grid.appendChild(btn);
+  });
+  updateGlobalStats();
+}
+
+function updateGlobalStats(){
+  const qs=allQs();
+  const ans=qs.filter(q=>state.history[q.id]).length;
+  const cor=qs.filter(q=>state.history[q.id]&&state.history[q.id].correct).length;
+  const rate=ans>0?Math.round(cor/ans*100):0;
+  document.getElementById('globalStats').innerHTML=`
+    <div class="num-large num">${ans}<span style="color:var(--ink-quaternary);font-weight:400"> / ${qs.length}</span></div>
+    <div class="num-sub">回答 — ${rate}%</div>
+  `;
+}
+
+let queue=[],idx=0,curQ=null;
+
+function startSubject(id){
+  const qs=allQs().filter(q=>q.subject===id);
+  if(qs.length===0){toast('この科目には問題がありません');return;}
+  queue=shuffle(qs);idx=0;showScreen('quizScreen');showQ();
+}
+
+function startMode(m){
+  const qs=allQs();
+  let p=[];
+  if(m==='random')p=qs;
+  else if(m==='weak')p=qs.filter(q=>state.history[q.id]&&!state.history[q.id].correct);
+  else if(m==='unanswered')p=qs.filter(q=>!state.history[q.id]);
+  if(p.length===0){
+    if(m==='weak')toast('苦手問題はまだありません');
+    else if(m==='unanswered')toast('未回答の問題はありません');
+    else toast('問題がありません');
+    return;
+  }
+  queue=shuffle(p);idx=0;showScreen('quizScreen');showQ();
+}
+
+function shuffle(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}return r;}
+
+function showQ(){
+  if(idx>=queue.length){toast('全問終了 — おつかれさまでした');backToHome();return;}
+  curQ=queue[idx];
+  const sub=SUBJECTS.find(s=>s.id===curQ.subject);
+  document.getElementById('qSubject').textContent='科目 / '+(sub?sub.name.split('・')[0]:curQ.subject);
+  document.getElementById('qSubjectName').textContent=sub?sub.name:curQ.subject;
+  document.getElementById('qProgress').innerHTML=`${pad(idx+1)}<span class="total"> / ${pad(queue.length)}</span>`;
+  document.getElementById('qNumLabel').textContent='問 '+pad(idx+1);
+  document.getElementById('qText').textContent=curQ.q;
+  const ce=document.getElementById('qChoices');
+  ce.innerHTML='';
+  const L=['A','B','C','D','E'];
+  curQ.choices.forEach((c,i)=>{
+    const b=document.createElement('button');
+    b.className='quiz-choice';
+    b.innerHTML=`<span class="quiz-choice-letter">${L[i]}</span><span class="quiz-choice-text">${esc(c)}</span><span class="quiz-choice-mark"></span>`;
+    b.onclick=()=>selectChoice(i);
+    ce.appendChild(b);
+  });
+  document.getElementById('explanation').classList.remove('show');
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('skillDetail').classList.remove('show');
+  window.scrollTo({top:0,behavior:'instant'});
+}
+
+function selectChoice(i){
+  const bs=document.querySelectorAll('#qChoices .quiz-choice');
+  if(bs[0].disabled)return;
+  const cor=(i===curQ.answer);
+  bs.forEach((b,k)=>{
+    b.disabled=true;
+    const mark=b.querySelector('.quiz-choice-mark');
+    if(k===curQ.answer){b.classList.add('correct');mark.textContent='正解';}
+    if(k===i&&!cor){b.classList.add('wrong');mark.textContent='選択';}
+  });
+  state.history[curQ.id]={correct:cor,count:(state.history[curQ.id]&&state.history[curQ.id].count||0)+1,lastAnswered:Date.now()};
+  saveState();updateGlobalStats();
+  const al=document.getElementById('answerLine');
+  const L=['A','B','C','D','E'];
+  if(cor){al.textContent='正解 — '+L[curQ.answer];al.className='expl-verdict correct';}
+  else{al.textContent='不正解 — 正解は '+L[curQ.answer];al.className='expl-verdict wrong';}
+  document.getElementById('explBody').textContent=curQ.explanation||'解説はありません';
+  if(curQ.ref){
+    document.getElementById('refRow').style.display='grid';
+    document.getElementById('refBody').textContent=curQ.ref;
+  }else{
+    document.getElementById('refRow').style.display='none';
+  }
+  const sre=document.getElementById('skillRef');
+  document.getElementById('skillDetail').classList.remove('show');
+  if(curQ.skillId&&SKILLS[curQ.skillId]){
+    const sk=SKILLS[curQ.skillId];
+    sre.innerHTML=`<button class="skill-toggle" onclick="toggleSkill()">関連スキル ${curQ.skillId} ${esc(sk.name)} →</button>`;
+  }else{sre.innerHTML='';}
+  document.getElementById('explanation').classList.add('show');
+  document.getElementById('nextBtn').style.display='inline-block';
+}
+
+function toggleSkill(){
+  const el=document.getElementById('skillDetail');
+  if(!curQ||!curQ.skillId||!SKILLS[curQ.skillId])return;
+  if(!el.classList.contains('show')){
+    const sk=SKILLS[curQ.skillId];
+    el.innerHTML=`
+      <div class="skill-detail-title">${curQ.skillId} ${esc(sk.name)}</div>
+      <dl>
+        <dt>定義</dt><dd>${esc(sk.definition)}</dd>
+        <dt>フレーム</dt><dd>${esc(sk.frameworks||'-')}</dd>
+        <dt>シーン</dt><dd>${esc(sk.scenes||'-')}</dd>
+        <dt>進め方</dt><dd><ol>${(sk.steps||[]).map(s=>`<li>${esc(s)}</li>`).join('')}</ol></dd>
+      </dl>
+    `;
+    el.classList.add('show');
+  }else{el.classList.remove('show');}
+}
+
+function nextQuestion(){idx++;showQ();}
+function backToHome(){showScreen('homeScreen');}
+
+function askClaude(){
+  if(!curQ)return;
+  const L=['A','B','C','D','E'];
+  const ct=curQ.choices.map((c,i)=>`${L[i]}. ${c}`).join('\n');
+  const sub=SUBJECTS.find(s=>s.id===curQ.subject);
+  let sc='';
+  if(curQ.skillId&&SKILLS[curQ.skillId]){
+    const sk=SKILLS[curQ.skillId];
+    sc=`\n\n【関連する経営コンサルスキル】${curQ.skillId} ${sk.name}\n定義：${sk.definition}\n主要フレームワーク：${sk.frameworks||'-'}`;
+  }
+  const prompt=`中小企業診断士試験の以下の問題について、もう少し詳しく教えてください。\n\n【科目】${sub?sub.name:curQ.subject}${sc}\n\n【問題】\n${curQ.q}\n\n【選択肢】\n${ct}\n\n【正解】${L[curQ.answer]}\n\n【解説】\n${curQ.explanation||'（解説なし）'}\n\n上記の解説でわからない点を質問させてください。特に、なぜ正解が${L[curQ.answer]}になるのか、他の選択肢がなぜ誤りなのか、関連する基礎概念も含めて噛み砕いて説明してください。`;
+  window.open('https://claude.ai/new?q='+encodeURIComponent(prompt),'_blank');
+}
+
+function renderStats(){
+  const qs=allQs();
+  const ans=qs.filter(q=>state.history[q.id]).length;
+  const cor=qs.filter(q=>state.history[q.id]&&state.history[q.id].correct).length;
+  const we=qs.filter(q=>state.history[q.id]&&!state.history[q.id].correct).length;
+  const rate=ans>0?Math.round(cor/ans*100):0;
+  document.getElementById('statTotal').textContent=ans;
+  document.getElementById('statCorrect').textContent=cor;
+  document.getElementById('statRate').textContent=rate+'%';
+  document.getElementById('statWeak').textContent=we;
+  const se=document.getElementById('subjectStats');
+  se.innerHTML='';
+  SUBJECTS.forEach((sub,i)=>{
+    const sq=qs.filter(q=>q.subject===sub.id);
+    const sa=sq.filter(q=>state.history[q.id]).length;
+    const sc=sq.filter(q=>state.history[q.id]&&state.history[q.id].correct).length;
+    const sr=sa>0?Math.round(sc/sa*100):0;
+    const sp=sq.length>0?Math.round(sa/sq.length*100):0;
+    const d=document.createElement('div');
+    d.className='subject-stat-row';
+    d.innerHTML=`
+      <span class="subject-num">${pad(i+1)}</span>
+      <span class="name">${esc(sub.name)}</span>
+      <span class="stats-num">${sc}/${sa}</span>
+      <span style="display:flex;align-items:center;gap:8px">
+        <span class="stats-rate">${sr}%</span>
+        <span class="stats-bar"><span class="stats-bar-fill" style="display:block;width:${sp}%;height:100%"></span></span>
+      </span>
+    `;
+    se.appendChild(d);
+  });
+}
+
+function resetProgress(){
+  if(!confirm('学習履歴をすべてリセットしますか（追加した問題は残ります）'))return;
+  state={history:{}};saveState();toast('リセットしました');renderStats();updateGlobalStats();
+}
+
+function renderAdd(){
+  const sel=document.getElementById('newSubject');
+  sel.innerHTML='';
+  SUBJECTS.forEach(sub=>{const o=document.createElement('option');o.value=sub.id;o.textContent=sub.name;sel.appendChild(o);});
+  renderCustomList();
+}
+
+function renderCustomList(){
+  const list=document.getElementById('customList');
+  const c=loadCustom();
+  if(c.length===0){list.innerHTML='<div class="empty-state"><span class="label">未登録</span><div>追加した問題はここに表示されます</div></div>';return;}
+  list.innerHTML='';
+  c.forEach((q,i)=>{
+    const sub=SUBJECTS.find(s=>s.id===q.subject);
+    const d=document.createElement('div');
+    d.className='custom-list-item';
+    d.innerHTML=`
+      <span class="subject-tag">${sub?esc(sub.name.split('・')[0]):'—'}</span>
+      <span class="preview">${esc(q.q.slice(0,40))}${q.q.length>40?'…':''}</span>
+      <button class="btn-text danger" style="padding:0" onclick="deleteCustom(${i})">削除</button>
+    `;
+    list.appendChild(d);
+  });
+}
+
+function addCustomQuestion(){
+  const q=document.getElementById('newQuestion').value.trim();
+  const choices=[document.getElementById('newChoice0').value.trim(),document.getElementById('newChoice1').value.trim(),document.getElementById('newChoice2').value.trim(),document.getElementById('newChoice3').value.trim()];
+  if(!q||choices.some(c=>!c)){toast('問題文と4つの選択肢をすべて入力してください');return;}
+  const nq={id:'custom_'+Date.now(),subject:document.getElementById('newSubject').value,q:q,choices:choices,answer:parseInt(document.getElementById('newAnswer').value),explanation:document.getElementById('newExplanation').value.trim(),ref:document.getElementById('newRef').value.trim(),custom:true};
+  const c=loadCustom();c.push(nq);saveCustom(c);
+  toast('問題を保存しました');
+  ['newQuestion','newChoice0','newChoice1','newChoice2','newChoice3','newExplanation','newRef'].forEach(i=>document.getElementById(i).value='');
+  renderCustomList();updateGlobalStats();
+}
+
+function deleteCustom(i){if(!confirm('この問題を削除しますか'))return;const c=loadCustom();c.splice(i,1);saveCustom(c);renderCustomList();toast('削除しました');}
+
+function exportData(){
+  const d={exportedAt:new Date().toISOString(),history:state.history,custom:loadCustom()};
+  const b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
+  const u=URL.createObjectURL(b);
+  const a=document.createElement('a');a.href=u;a.download=`shindanshi_backup_${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(u);
+  toast('エクスポートしました');
+}
+
+function importData(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    try{
+      const d=JSON.parse(ev.target.result);
+      if(d.history){state.history={...state.history,...d.history};saveState();}
+      if(d.custom&&Array.isArray(d.custom)){const ex=loadCustom();const ei=new Set(ex.map(q=>q.id));saveCustom([...ex,...d.custom.filter(q=>!ei.has(q.id))]);}
+      toast('インポート完了');renderHome();updateGlobalStats();
+    }catch(err){toast('ファイルの読み込みに失敗しました');}
+  };
+  r.readAsText(f);
+}
+
+let tt=null;
+function toast(m){const e=document.getElementById('toast');e.textContent=m;e.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('show'),2500);}
+
+loadState();renderHome();updateGlobalStats();
+</script>
+</body>
+</html>
