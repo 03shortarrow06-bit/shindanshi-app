@@ -1,0 +1,29 @@
+# OneDrive temp/sync files
+*.tmp
+~$*
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Brainstorming workspace (local only)
+.superpowers/
+
+# Backup files
+*.backup
+
+# Editor
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Private project files (not for public repo)
+docs/
+00_スキル基盤/
+GitHub_Pages公開手順.md
+GitHub更新手順.md
+学習アプリ_使い方.md
+*.bat
+exports/
+中小企業診断士　テキスト/
