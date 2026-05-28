@@ -183,6 +183,29 @@ html,body{
 }
 .daily-sub{font-size:10.5px;color:var(--ink-2);margin-top:8px}
 
+/* —— Review Card (SRS) —— */
+.review-card{
+  background:linear-gradient(135deg, var(--warm-bg) 0%, var(--surface) 100%);
+  border:1px solid var(--warm-line);
+  border-radius:var(--radius);
+  padding:14px 16px;margin-bottom:10px;
+}
+.review-card .rv-head{
+  display:flex;align-items:center;gap:7px;
+  font-size:12px;font-weight:700;color:var(--warm);
+  letter-spacing:0.01em;margin-bottom:4px;
+}
+.review-card .rv-main{font-size:13px;font-weight:600;color:var(--ink);line-height:1.5}
+.review-card .rv-break{font-size:10.5px;color:var(--ink-2);margin-top:4px;font-variant-numeric:tabular-nums}
+.review-card .rv-btn{
+  margin-top:10px;background:var(--warm);color:#fff;border:none;
+  padding:9px 14px;border-radius:var(--radius-xs);
+  font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;
+  transition:opacity 0.15s, transform 0.1s;
+}
+.review-card .rv-btn:hover{opacity:0.9}
+.review-card .rv-btn:active{transform:scale(0.98)}
+
 /* —— Mode list —— */
 .mode-list{padding:4px 14px}
 .mode-row{
@@ -541,6 +564,9 @@ html,body{
 
 <!-- Daily Goal Card -->
 <div class="daily-card" id="dailyCard"></div>
+
+<!-- Review Card (SRS) -->
+<div id="reviewCardWrap"></div>
 
 <!-- 出題モード -->
 <div class="section-lab">
@@ -912,6 +938,46 @@ function masteryLevel(rate, ansCount){
   return 5;
 }
 
+// —— SRS (間隔反復) —————————————————————————
+const SRS_INTERVALS={1:3, 2:21};   // ステージ→次回までの暦日数
+const SRS_GRADUATED=3;             // 卒業ステージ
+
+// 既存履歴（srsStage欠損）は「ステージ1・起点=ts」として遅延補完
+function srsStageOf(h){return (h&&h.srsStage)?h.srsStage:1;}
+function srsAnchorOf(h){return (h&&h.srsAnchorTs)?h.srsAnchorTs:(h?h.ts:0);}
+
+// 2つのタイムスタンプ間の暦日差
+function dayDiff(fromTs, toTs){
+  const a=new Date(fromTs), b=new Date(toTs);
+  const da=new Date(a.getFullYear(),a.getMonth(),a.getDate());
+  const db=new Date(b.getFullYear(),b.getMonth(),b.getDate());
+  return Math.round((db-da)/86400000);
+}
+
+// 問題が現在 due か + 種別を返す（dueでなければ null）
+function srsDueInfo(h){
+  if(!h)return null;
+  const stage=srsStageOf(h);
+  if(stage>=SRS_GRADUATED)return null;
+  const interval=SRS_INTERVALS[stage];
+  const days=dayDiff(srsAnchorOf(h), Date.now());
+  if(days>=interval){
+    return {stage, overdue:days-interval, days};
+  }
+  return null;
+}
+
+// 復習キュー（due問題を超過日数の大きい順に）
+function getReviewQueue(){
+  const due=[];
+  allQs().forEach(q=>{
+    const info=srsDueInfo(state.history[q.id]);
+    if(info)due.push({q, stage:info.stage, overdue:info.overdue});
+  });
+  due.sort((a,b)=>b.overdue-a.overdue);
+  return due;
+}
+
 function aggregateMastery(subjectId){
   const buckets=MASTERY_BUCKETS[subjectId]||[{name:'全体',skills:[]}];
   const qs=allQs().filter(q=>q.subject===subjectId);
@@ -1015,8 +1081,29 @@ function showScreen(id){
 function renderHome(){
   renderStreakBox();
   renderDailyCard();
+  renderReviewCard();
   renderModeList();
   renderSubjectGrid();
+}
+
+function renderReviewCard(){
+  const wrap=document.getElementById('reviewCardWrap');
+  if(!wrap)return;
+  const due=getReviewQueue();
+  if(due.length===0){ wrap.innerHTML=''; return; }
+  const c3=due.filter(d=>d.stage===1).length;
+  const c21=due.filter(d=>d.stage===2).length;
+  const breakdown=[];
+  if(c3>0)breakdown.push(`3日: ${c3}問`);
+  if(c21>0)breakdown.push(`3週間: ${c21}問`);
+  wrap.innerHTML=`
+    <div class="review-card">
+      <div class="rv-head">🔁 復習のタイミング</div>
+      <div class="rv-main">${due.length}問が記憶定着の復習時期です</div>
+      <div class="rv-break">${breakdown.join(' · ')}</div>
+      <button class="rv-btn" onclick="startReview()">復習を始める →</button>
+    </div>
+  `;
 }
 
 function renderStreakBox(){
@@ -1140,6 +1227,13 @@ function startMode(m){
   queue=shuffle(p);idx=0;showScreen('quizScreen');showQ();
 }
 
+function startReview(){
+  const due=getReviewQueue();
+  if(due.length===0){toast('復習対象はありません');return;}
+  queue=due.map(d=>d.q);  // 超過日数の大きい順（シャッフルしない）
+  idx=0;showScreen('quizScreen');showQ();
+}
+
 function shuffle(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}return r;}
 
 let qStartTime=0;
@@ -1190,14 +1284,31 @@ function selectChoice(i){
   if(buttons[0]&&buttons[0].disabled)return;
   const isCorrect=(i===curQ.answer);
   const elapsedSec=Math.round((Date.now()-qStartTime)/1000);
-  // Update history with elapsed time
+  // Update history with elapsed time + SRS stage
   const prev=state.history[curQ.id];
+  let srsStage, srsAnchorTs;
+  if(!prev){
+    srsStage=1; srsAnchorTs=Date.now();
+  }else{
+    const due=srsDueInfo(prev);
+    if(due){
+      // due状態の問題を解いた → ステージ+1、起点リセット
+      srsStage=Math.min(srsStageOf(prev)+1, SRS_GRADUATED);
+      srsAnchorTs=Date.now();
+    }else{
+      // due前の早期再解答 → スケジュール維持
+      srsStage=srsStageOf(prev);
+      srsAnchorTs=srsAnchorOf(prev);
+    }
+  }
   state.history[curQ.id]={
     correct:isCorrect,
     ts:Date.now(),
     elapsedSec:elapsedSec,
     count:((prev&&prev.count)||0)+1,
-    lastAnswered:Date.now()
+    lastAnswered:Date.now(),
+    srsStage:srsStage,
+    srsAnchorTs:srsAnchorTs
   };
   updateStreakAndDaily(isCorrect);
   saveState();
